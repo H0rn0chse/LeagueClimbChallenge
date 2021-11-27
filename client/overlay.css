@@ -29,3 +29,15 @@
 #overlay div, #overlay b {
     color: #0074d9;
 }
+
+@media only screen and (max-width: 600px) {
+    #overlayContainer {
+        justify-content: end;
+    }
+    #overlay {
+        padding: 0;
+    }
+    #overlay > * {
+        margin: 0.2em;
+    }
+}

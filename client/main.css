@@ -13,9 +13,16 @@ html, body, * {
 /*Picnic overrides*/
 h1, h2, h3, h4, h5, h6 {
     padding: 0 !important;
+    text-align: center;
 }
 
 html, body {
     width: 100vw;
     height: 100vh;
+}
+
+@media only screen and (max-width: 600px) {
+    html, body, * {
+        font-size: small;
+    }
 }
