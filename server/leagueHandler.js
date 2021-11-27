@@ -154,18 +154,18 @@ async function getData () {
         summoner1: {
             name: config.summoner1,
             league: getTier(status1),
-            points: status1.leaguePoints + " LP",
-            wins: status1.wins,
-            losses: status1.losses,
-            score: getScore(status1)
+            points: status1.leaguePoints ?? 0 + " LP",
+            wins: status1.wins ?? 0,
+            losses: status1.losses ?? 0,
+            score: getScore(status1) ?? 0
         },
         summoner2: {
             name: config.summoner2,
             league: getTier(status2),
-            points: status2.leaguePoints + " LP",
-            wins: status2.wins,
-            losses: status2.losses,
-            score: getScore(status2)
+            points: status2.leaguePoints ?? 0 + " LP",
+            wins: status2.wins ?? 0,
+            losses: status2.losses ?? 0,
+            score: getScore(status2) ?? 0
         }
     };
     data.summoner1.lead = data.summoner1.score > data.summoner2.score;
