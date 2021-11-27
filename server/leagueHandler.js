@@ -17,6 +17,66 @@ const riotToken = process.env.RIOT_APP_TOKEN;
 const updateDiff = 60*1000 // 1min
 let latestUpdate = null;
 
+const tierMap = {
+    IRON: {
+        name: "Iron",
+        hasDivisions: true,
+        score: 100000,
+    },
+    BRONZE: {
+        name: "Bronze",
+        hasDivisions: true,
+        score: 200000,
+    },
+    SILVER: {
+        name: "Silver",
+        hasDivisions: true,
+        score: 300000,
+    },
+    GOLD: {
+        name: "Gold",
+        hasDivisions: true,
+        score: 400000,
+    },
+    PLATINUM: {
+        name: "Platinum",
+        hasDivisions: true,
+        score: 500000,
+    },
+    MASTER: {
+        name: "Master",
+        hasDivisions: false,
+        score: 600000,
+    },
+    GRANDMASTER: {
+        name: "Grandmaster",
+        hasDivisions: false,
+        score: 700000,
+    },
+    CHALLENGER: {
+        name: "Challenger",
+        hasDivisions: false,
+        score: 800000,
+    }
+};
+
+divisionMap = {
+    "I": {
+        score: 100000
+    },
+    "II": {
+        score: 200000
+    },
+    "II": {
+        score: 300000
+    },
+    "III": {
+        score: 400000
+    },
+    "IV": {
+        score: 500000
+    },
+}
 
 function getSummoner (summonerName, region) {
     let summonerPromise = cache.summoner?.[region]?.[summonerName];
@@ -55,47 +115,23 @@ async function getStatus (summonerName, region) {
 }
 
 function getTier (status) {
-    const map = {
-        IRON: {
-            name: "Iron",
-            hasDivisions: true,
-        },
-        BRONZE: {
-            name: "Bronze",
-            hasDivisions: true,
-        },
-        SILVER: {
-            name: "Silver",
-            hasDivisions: true,
-        },
-        GOLD: {
-            name: "Gold",
-            hasDivisions: true,
-        },
-        PLATINUM: {
-            name: "Platinum",
-            hasDivisions: true,
-        },
-        MASTER: {
-            name: "Master",
-            hasDivisions: false,
-        },
-        GRANDMASTER: {
-            name: "Grandmaster",
-            hasDivisions: false,
-        },
-        CHALLENGER: {
-            name: "Challenger",
-            hasDivisions: false,
-        }
-    };
-    let tier = map[status.tier]?.name;
+    let tier = tierMap[status.tier]?.name;
 
-    if (map[status.tier]?.hasDivisions) {
+    if (tierMap[status.tier]?.hasDivisions) {
         tier += ` ${status.rank}`;
     }
     return tier;
 };
+
+function getScore (status) {
+    const tier = tierMap[status.tier];
+    const division = divisionMap[status.rank];
+    if (!tier || !division) {
+        return 0;
+    }
+
+    return tier.score + division.score + status.leaguePoints;
+}
 
 async function getData () {
     if (latestUpdate && Date.now() - latestUpdate < updateDiff) {
@@ -118,18 +154,22 @@ async function getData () {
         summoner1: {
             name: config.summoner1,
             league: getTier(status1),
-            points: status1.leaguePoints,
-            wins:  status1.wins,
-            losses:  status1.losses,
+            points: status1.leaguePoints + " LP",
+            wins: status1.wins,
+            losses: status1.losses,
+            score: getScore(status1)
         },
         summoner2: {
             name: config.summoner2,
             league: getTier(status2),
-            points: status2.leaguePoints,
-            wins:  status2.wins,
-            losses:  status2.losses,
+            points: status2.leaguePoints + " LP",
+            wins: status2.wins,
+            losses: status2.losses,
+            score: getScore(status2)
         }
     };
+    data.summoner1.lead = data.summoner1.score > data.summoner2.score;
+    data.summoner2.lead = data.summoner2.score > data.summoner1.score;
     cache.lastData = data;
 
     return data;
