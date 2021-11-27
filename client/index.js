@@ -40,6 +40,10 @@ async function update () {
         const ratio = userData.wins / (userData.losses + userData.wins) * 100;
         info.innerText = `${userData.wins}W/${userData.losses}L (${ratio.toFixed(1)}%)`
     });
+
+    const msRemaining = data.endDate - Date.now();
+    const daysRemaining = Math.floor((((msRemaining / 1000) / 60) / 60) / 24);
+    document.querySelector("#daysRemaining").innerText = daysRemaining;
 }
 
 update()
