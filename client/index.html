@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeagueClimbChallenge</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic@6/picnic.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/alertifyjs@1/build/css/alertify.min.css">
     <link rel="stylesheet" href="./main.css">
+    <script src="https://unpkg.com/alertifyjs@1/build/alertify.js"></script>
     <script type="module" src="./index.js"></script>
 </head>
 <body>
@@ -30,6 +32,12 @@
             <div>Noch <b>6</b> Tage</div>
         </div>
     </div>
+    <div id="busyContainer" style="display: none;">
+        <div class="busyIndicator">
+            Loading...
+        </div>
+    </div>
+
 </body>
 <script
 		data-label="Check out the GitHub repository!"

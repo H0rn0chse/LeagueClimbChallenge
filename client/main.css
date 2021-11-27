@@ -1,5 +1,6 @@
 @import "./app.css";
 @import "./overlay.css";
+@import "./busyIndicator.css";
 
 html, body, * {
     padding: 0;

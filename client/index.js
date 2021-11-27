@@ -39,12 +39,30 @@ async function update () {
         const info = document.querySelector(`#info${identifier}`);
         const ratio = userData.wins / (userData.losses + userData.wins) * 100;
         info.innerText = `${userData.wins}W/${userData.losses}L (${ratio.toFixed(1)}%)`
-    })
+    });
 }
 
-update();
+update()
+    .catch(console.error);
 
 const updateButton = document.querySelector("#btnUpdate");
-updateButton.addEventListener("click", (evt) => {
-    update();
+updateButton.addEventListener("click", async (evt) => {
+    let timer;
+    const busyContainer = document.querySelector("#busyContainer");
+    try {
+        updateButton.setAttribute("disabled", "");
+        timer = setTimeout(() => {
+            // SetBusy
+            busyContainer.style.display = "";
+        }, 800)
+        await update();
+        alertify.success("Updated");
+    } catch (err) {
+        console.error(err);
+        alertify.error("Some error occurred");
+    } finally {
+        updateButton.removeAttribute("disabled");
+        clearTimeout(timer);
+        busyContainer.style.display = "none";
+    }
 });
