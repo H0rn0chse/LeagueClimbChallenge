@@ -1,9 +1,16 @@
+const { getData } = require("./leagueHandler.js");
+const config = require("../config.json");
 
-function handleGetRequest (req, res, next) {
+async function handleGetRequest (req, res, next) {
     switch (req.url) {
         case "/blob":
-                console.log("request got in");
-                res.end(JSON.stringify({ id: "some data" }));
+                console.log("handling /blob request");
+
+                const data = await getData();
+                data.endDate = config.endDateEpoch;
+
+                res.end(JSON.stringify(data));
+
             	break;
         default:
             console.log(`handler could not match the request ${req.url}`)
@@ -12,5 +19,5 @@ function handleGetRequest (req, res, next) {
 }
 
 module.exports = {
-    handleGetRequest: handleGetRequest
+    handleGetRequest
 }

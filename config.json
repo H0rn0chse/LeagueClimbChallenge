@@ -1,8 +1,8 @@
 {
     "summoner1": "German Aimbot",
-    "region1": "NA",
+    "region1": "NA1",
     "summoner2": "USAgurin",
-    "region2": "NA",
-    "startDate": "2020-11-18",
-    "endDate": "2020-12-06"
+    "region2": "NA1",
+    "endDate": "2020-12-06",
+    "endDateEpoch": "1638748800"
 }
