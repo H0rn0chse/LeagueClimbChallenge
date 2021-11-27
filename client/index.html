@@ -5,8 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeagueClimbChallenge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic@6/picnic.min.css">
+    <link rel="stylesheet" href="./main.css">
+    <script type="module" src="./index.js"></script>
 </head>
 <body>
-    <p>Test</p>
+    <div id="app">
+        <div id="left">
+            <h1 id="userName1">userName1</h1>
+            <h2 id="divison1">Challenger</h1>
+            <h2 id="lp1">100 LP</h1>
+        </div>
+        <div id="right" class="winner">
+            <h1 id="userName2">userName2</h1>
+            <h2 id="divison2">Challenger</h1>
+            <h2 id="lp2">100 LP</h1>
+        </div>
+    </div>
+    <div id="overlayContainer">
+        <div id="overlay">
+            <button id="btnUpdate">Update</button>
+            <div>Noch <b>6</b> Tage</div>
+        </div>
+    </div>
 </body>
+<script
+		data-label="Check out the GitHub repository!"
+		data-href="https://github.com/H0rn0chse/LeagueClimbChallenge"
+		data-target="_blank"
+		src="https://unpkg.com/github-corners@latest/dist/embed.min.js">
+	</script>
 </html>
