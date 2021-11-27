@@ -28,8 +28,16 @@
     margin: 1em;
 }
 
+#left > h3, #right > h3{
+    margin: 0;
+}
+
 #left.winner > *, #right.winner > * {
     margin: 0.5em;
+}
+
+#left.winner > h3, #right.winner > h3 {
+    margin: 0;
 }
 
 .winner {

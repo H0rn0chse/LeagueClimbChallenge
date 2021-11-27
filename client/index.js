@@ -1,13 +1,11 @@
 import { getData } from "./request.js";
 
-console.log("start fetching data");
-getData().then((data) => {
-    console.log("got some data");
+async function update () {
+    const data = await getData();
     console.log(data);
-})
-console.log("still fetching data");
+}
 
 const updateButton = document.querySelector("#btnUpdate");
 updateButton.addEventListener("click", (evt) => {
-    alert("should update");
+    update();
 });

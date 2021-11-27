@@ -2,7 +2,13 @@ export function getData () {
     return new Promise((resolve, reject) => {
         const req = new XMLHttpRequest();
         req.addEventListener("load", () => {
-            resolve(req.responseText);
+            let data;
+            try {
+                data = JSON.parse(req.responseText);
+            } catch (err) {
+                data = req.responseText;
+            }
+            resolve(data);
         });
         req.addEventListener("error", () => {
             reject("error");
