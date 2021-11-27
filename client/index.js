@@ -1,9 +1,5 @@
 import { getData } from "./request.js";
 
-function calcRatio (data) {
-    return
-}
-
 async function update () {
     const data = await getData();
     console.log(data);
@@ -35,9 +31,9 @@ async function update () {
         });
 
         if (userData.lead) {
-            container.classList.add("winner");
+            container.classList.add("lead");
         } else {
-            container.classList.remove("winner");
+            container.classList.remove("lead");
         }
 
         const info = document.querySelector(`#info${identifier}`);

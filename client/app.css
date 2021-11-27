@@ -32,14 +32,14 @@
     margin: 0;
 }
 
-#left.winner > *, #right.winner > * {
+#left.lead > *, #right.lead > * {
     margin: 0.5em;
 }
 
-#left.winner > h3, #right.winner > h3 {
+#left.lead > h3, #right.lead > h3 {
     margin: 0;
 }
 
-.winner {
+.lead {
     font-size: xx-large;
 }

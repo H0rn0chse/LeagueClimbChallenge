@@ -7,7 +7,7 @@ async function handleGetRequest (req, res, next) {
                 console.log("handling /blob request");
 
                 const data = await getData();
-                data.endDate = config.endDateEpoch;
+                data.endDate = parseInt(config.endDateEpoch, "10") * 1000;
 
                 res.end(JSON.stringify(data));
 
