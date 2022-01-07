@@ -7,7 +7,7 @@ let _config;
 try {
     _config = JSON.parse(configContent);
 } catch (err) {
-    console.error(err)
+    console.error(err);
     _config = {};
 }
 

@@ -1,5 +1,7 @@
 import { request } from "./socket-server/handler.js";
 
+const { alertify } = globalThis;
+
 async function update () {
     const data = await request("GET", "/blob");
     console.log(data);
@@ -41,7 +43,7 @@ async function update () {
         if (userData.losses + userData.wins > 0) {
             ratio = userData.wins / (userData.losses + userData.wins) * 100;
         }
-        info.innerText = `${userData.wins}W/${userData.losses}L (${ratio > 0 ? ratio.toFixed(1) : ratio.toFixed(0)}%)`
+        info.innerText = `${userData.wins}W/${userData.losses}L (${ratio > 0 ? ratio.toFixed(1) : ratio.toFixed(0)}%)`;
     });
 
     const msRemaining = data.endDate - Date.now();
@@ -61,7 +63,7 @@ updateButton.addEventListener("click", async (evt) => {
         timer = setTimeout(() => {
             // SetBusy
             busyContainer.style.display = "";
-        }, 800)
+        }, 800);
         await update();
         alertify.success("Updated");
     } catch (err) {

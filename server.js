@@ -13,6 +13,6 @@ registerXhrHandler("get", "/blob", async (req, res) => {
     const data = await getData();
     data.endDate = parseInt(config.endDateEpoch, "10") * 1000;
 
-    res.json(data)
+    res.json(data);
     res.end();
 });

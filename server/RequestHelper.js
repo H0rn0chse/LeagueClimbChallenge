@@ -2,20 +2,20 @@ import { request } from "https";
 
 export function getRequest (host, endpoint, headers = {}, queryParams = {}) {
     return new Promise((resolve, reject) => {
-        const url = endpoint;
+        let url = endpoint;
         Object.keys(queryParams).forEach(key => {
             const value = queryParams[key];
             if (url.includes("?")) {
-                url += `&${key}=${value}`
+                url += `&${key}=${value}`;
             } else {
-                url += `?${key}=${value}`
+                url += `?${key}=${value}`;
             }
         });
 
         const options = {
             hostname: host,
             path: encodeURI(url),
-            method: 'GET',
+            method: "GET",
             headers: headers
         };
 
@@ -32,7 +32,7 @@ export function getRequest (host, endpoint, headers = {}, queryParams = {}) {
                     data = json;
                 }
                 resolve(data);
-            })
+            });
         });
 
         req.on("error", error => {
@@ -42,6 +42,6 @@ export function getRequest (host, endpoint, headers = {}, queryParams = {}) {
             reject(error);
         });
 
-        req.end()
+        req.end();
     });
 }

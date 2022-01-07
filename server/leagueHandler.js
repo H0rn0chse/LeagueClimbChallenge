@@ -14,7 +14,7 @@ const cache = {
 };
 
 const riotToken = process.env.RIOT_APP_TOKEN;
-const updateDiff = 60*1000 // 1min
+const updateDiff = 60*1000; // 1min
 let latestUpdate = null;
 
 const tierMap = {
@@ -72,16 +72,16 @@ const divisionMap = {
     "II": {
         score: 200000
     },
-    "II": {
+    "III": {
         score: 300000
     },
-    "III": {
+    "IV": {
         score: 400000
     },
-    "IV": {
+    "V": {
         score: 500000
     },
-}
+};
 
 function getSummoner (summonerName, region) {
     let summonerPromise = cache.summoner?.[region]?.[summonerName];
@@ -90,8 +90,8 @@ function getSummoner (summonerName, region) {
     }
 
     const host = `${region.toLowerCase()}.api.riotgames.com`;
-    const endpoint = `/lol/summoner/v4/summoners/by-name/${summonerName}`
-    summonerPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
+    const endpoint = `/lol/summoner/v4/summoners/by-name/${summonerName}`;
+    summonerPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken });
 
     if (!cache.summoner[region]) {
         cache.summoner[region] = {};
@@ -108,11 +108,11 @@ async function getStatus (summonerName, region) {
     const info = await getSummoner(summonerName, region);
 
     const host = `${region.toLowerCase()}.api.riotgames.com`;
-    const endpoint = `/lol/league/v4/entries/by-summoner/${info.id}`
+    const endpoint = `/lol/league/v4/entries/by-summoner/${info.id}`;
     const statusPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
         .then((entries = []) => {
             const rankedEntry = entries.filter(entries => {
-                return entries.queueType === "RANKED_SOLO_5x5"
+                return entries.queueType === "RANKED_SOLO_5x5";
             })[0];
             if (!rankedEntry) {
                 return {
@@ -134,7 +134,7 @@ function getTier (status) {
         tier += ` ${status.rank}`;
     }
     return tier;
-};
+}
 
 function getScore (status) {
     const tier = tierMap[status.tier];
@@ -148,7 +148,7 @@ function getScore (status) {
 
 export async function getData () {
     if (latestUpdate && Date.now() - latestUpdate < updateDiff) {
-        console.log(`serving from cache: wait ${((updateDiff - (Date.now() - latestUpdate)) / 1000).toFixed(1)} seconds`)
+        console.log(`serving from cache: wait ${((updateDiff - (Date.now() - latestUpdate)) / 1000).toFixed(1)} seconds`);
         return cache.lastData;
     }
     latestUpdate = Date.now();
