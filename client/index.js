@@ -1,7 +1,7 @@
-import { getData } from "./request.js";
+import { request } from "./socket-server/handler.js";
 
 async function update () {
-    const data = await getData();
+    const data = await request("GET", "/blob");
     console.log(data);
 
     const map = {
@@ -37,8 +37,11 @@ async function update () {
         }
 
         const info = document.querySelector(`#info${identifier}`);
-        const ratio = userData.wins / (userData.losses + userData.wins) * 100;
-        info.innerText = `${userData.wins}W/${userData.losses}L (${ratio.toFixed(1)}%)`
+        let ratio = 0;
+        if (userData.losses + userData.wins > 0) {
+            ratio = userData.wins / (userData.losses + userData.wins) * 100;
+        }
+        info.innerText = `${userData.wins}W/${userData.losses}L (${ratio > 0 ? ratio.toFixed(1) : ratio.toFixed(0)}%)`
     });
 
     const msRemaining = data.endDate - Date.now();

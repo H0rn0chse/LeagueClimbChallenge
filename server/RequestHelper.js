@@ -1,7 +1,6 @@
-const https = require("https");
-const { hostname } = require("os");
+import { request } from "https";
 
-function getRequest (host, endpoint, headers = {}, queryParams = {}) {
+export function getRequest (host, endpoint, headers = {}, queryParams = {}) {
     return new Promise((resolve, reject) => {
         const url = endpoint;
         Object.keys(queryParams).forEach(key => {
@@ -21,7 +20,7 @@ function getRequest (host, endpoint, headers = {}, queryParams = {}) {
         };
 
         console.log(`sending request: ${endpoint}`);
-        const req = https.request(options, res => {
+        const req = request(options, res => {
 
             res.on("data", d => {
                 const buffer = Buffer.from(d);
@@ -46,7 +45,3 @@ function getRequest (host, endpoint, headers = {}, queryParams = {}) {
         req.end()
     });
 }
-
-module.exports = {
-    getRequest
-};

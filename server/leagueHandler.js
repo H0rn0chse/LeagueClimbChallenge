@@ -1,7 +1,7 @@
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 
-const config = require("../config.json");
-const { getRequest } = require("./RequestHelper.js");
+import { getRequest } from "./RequestHelper.js";
+import { config } from "./config.js";
 
 // local .env setup
 if (process.env.RIOT_APP_TOKEN === undefined) {
@@ -18,6 +18,11 @@ const updateDiff = 60*1000 // 1min
 let latestUpdate = null;
 
 const tierMap = {
+    UNRANKED: {
+        name: "Unranked",
+        hasDivisions: false,
+        score: 0,
+    },
     IRON: {
         name: "Iron",
         hasDivisions: true,
@@ -60,7 +65,7 @@ const tierMap = {
     }
 };
 
-divisionMap = {
+const divisionMap = {
     "I": {
         score: 100000
     },
@@ -104,11 +109,19 @@ async function getStatus (summonerName, region) {
 
     const host = `${region.toLowerCase()}.api.riotgames.com`;
     const endpoint = `/lol/league/v4/entries/by-summoner/${info.id}`
-    statusPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
-        .then(aEntries => {
-            return aEntries.filter(entries => {
+    const statusPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
+        .then((entries = []) => {
+            const rankedEntry = entries.filter(entries => {
                 return entries.queueType === "RANKED_SOLO_5x5"
-            })[0]
+            })[0];
+            if (!rankedEntry) {
+                return {
+                    tier: "UNRANKED",
+                    rank: "I",
+                    leaguePoints: 0
+                };
+            }
+            return rankedEntry;
         });
 
     return statusPromise;
@@ -133,7 +146,7 @@ function getScore (status) {
     return tier.score + division.score + status.leaguePoints;
 }
 
-async function getData () {
+export async function getData () {
     if (latestUpdate && Date.now() - latestUpdate < updateDiff) {
         console.log(`serving from cache: wait ${((updateDiff - (Date.now() - latestUpdate)) / 1000).toFixed(1)} seconds`)
         return cache.lastData;
@@ -174,7 +187,3 @@ async function getData () {
 
     return data;
 }
-
-module.exports = {
-    getData
-};

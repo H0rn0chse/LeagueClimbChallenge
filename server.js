@@ -1,24 +1,18 @@
-const path = require("path");
-const connect = require("connect");
-const serveStatic = require("serve-static");
-const { handleGetRequest } = require("./server/handler.js");
+import { startServer, registerXhrHandler } from "@h0rn0chse/socket-server";
 
-const port = parseInt(process.env.PORT, 10) || 8080;
-const host = process.env.PORT ? "0.0.0.0" : "localhost";
-const local = !!process.env.npm_config_debug;
+import { config } from "./server/config.js";
+import { getData } from "./server/leagueHandler.js";
 
-connect()
-    .use(serveStatic(path.join(__dirname, "client")))
-    .use("/get", handleGetRequest)
-    .use((req, res) => {
-        const body = "not supported";
-        res
-            .writeHead(400, {
-                'Content-Length': Buffer.byteLength(body),
-                'Content-Type': 'text/plain'
-            })
-            .end(body);
-    })
-    .listen(port, host, function(){
-        console.log(`Server running on http://${host}:${port}`);
-    });
+startServer({
+    useClientHandler: true
+});
+
+registerXhrHandler("get", "/blob", async (req, res) => {
+    console.log("handling /blob request");
+
+    const data = await getData();
+    data.endDate = parseInt(config.endDateEpoch, "10") * 1000;
+
+    res.json(data)
+    res.end();
+});
