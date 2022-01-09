@@ -21,6 +21,12 @@ html, body {
     height: 100vh;
 }
 
+#background {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
 @media only screen and (max-width: 600px) {
     html, body, * {
         font-size: small;

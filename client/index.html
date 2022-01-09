@@ -9,14 +9,15 @@
     <link rel="stylesheet" href="https://unpkg.com/alertifyjs@1/build/css/alertify.min.css">
     <link rel="stylesheet" href="./main.css">
     <script src="https://unpkg.com/alertifyjs@1/build/alertify.js"></script>
+    <script src="https://unpkg.com/@h0rn0chse/night-sky@1/dist/bundle.min.js"></script>
     <script type="module" src="./index.js"></script>
 </head>
 <body>
-    <div id="background">
-        <div id="stars"></div>
-        <div id="stars2"></div>
-        <div id="stars3"></div>
-    </div>
+    <night-sky
+        id="background"
+        density="30"
+    >
+    </night-sky>
     <div id="app">
         <div id="left">
             <h1 id="userName1">userName1</h1>
