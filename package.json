@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/H0rn0chse/LeagueClimbChallenge#readme",
   "dependencies": {
-    "@h0rn0chse/socket-server": "^1.1.1",
+    "@h0rn0chse/socket-server": "^1.1.2",
     "dotenv": "^10.0.0"
   },
   "devDependencies": {
