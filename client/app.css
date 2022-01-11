@@ -38,6 +38,7 @@
         padding-top: 0.5em;
     }
     .box {
+        width: 14em;
         line-height: 1.25;
     }
 }
