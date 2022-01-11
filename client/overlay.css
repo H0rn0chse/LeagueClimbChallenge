@@ -1,9 +1,8 @@
 #overlayContainer {
-    width: 100vw;
     height: 100vh;
     top: 0;
-    left: 0;
-    position: fixed;
+    right: 0;
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -35,6 +34,7 @@
     #overlayContainer {
         align-items: flex-start;
         justify-content: flex-end;
+        left: 0;
     }
     #overlay {
         padding: 0;

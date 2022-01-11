@@ -11,6 +11,7 @@
     flex-wrap: nowrap;
     position: absolute;
     padding-top: 1em;
+    overflow-x: auto;
 }
 
 .box {
