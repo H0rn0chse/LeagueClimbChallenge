@@ -33,12 +33,14 @@
 
 @media only screen and (max-width: 600px) {
     #overlayContainer {
-        align-items: center;
+        align-items: right;
         justify-content: end;
     }
     #overlay {
         padding: 0;
         margin-right: 0;
+        margin: 0.25em;
+        flex-direction: row;
     }
     #overlay > * {
         margin: 0.2em;
