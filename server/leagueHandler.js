@@ -48,20 +48,25 @@ const tierMap = {
         hasDivisions: true,
         score: 500000,
     },
+    DIAMOND: {
+        name: "Diamond",
+        hasDivisions: true,
+        score: 600000,
+    },
     MASTER: {
         name: "Master",
         hasDivisions: false,
-        score: 600000,
+        score: 700000,
     },
     GRANDMASTER: {
         name: "Grandmaster",
         hasDivisions: false,
-        score: 700000,
+        score: 800000,
     },
     CHALLENGER: {
         name: "Challenger",
         hasDivisions: false,
-        score: 800000,
+        score: 900000,
     }
 };
 
@@ -152,37 +157,35 @@ export async function getData () {
         return cache.lastData;
     }
     latestUpdate = Date.now();
-    let status1 = {};
-    let status2 = {};
-
-    try {
-        status1 = await getStatus(config.summoner1, config.region1);
-        status2 = await getStatus(config.summoner2, config.region2);
-    } catch (err) {
-        console.log("some error occurred");
-        console.log(err);
-    }
 
     const data = {
-        summoner1: {
-            name: config.summoner1,
-            league: getTier(status1),
-            points: (status1.leaguePoints ?? 0) + " LP",
-            wins: status1.wins ?? 0,
-            losses: status1.losses ?? 0,
-            score: getScore(status1) ?? 0
-        },
-        summoner2: {
-            name: config.summoner2,
-            league: getTier(status2),
-            points: (status2.leaguePoints ?? 0) + " LP",
-            wins: status2.wins ?? 0,
-            losses: status2.losses ?? 0,
-            score: getScore(status2) ?? 0
-        }
+        participants: []
     };
-    data.summoner1.lead = data.summoner1.score > data.summoner2.score;
-    data.summoner2.lead = data.summoner2.score > data.summoner1.score;
+
+    await config.participants.reduce(async (promise, player) => {
+        await promise;
+        try {
+            const status = await getStatus(player.summonerName, player.region);
+
+            const playerData = {
+                name: player.name,
+                league: getTier(status),
+                points: (status.leaguePoints ?? 0) + " LP",
+                wins: status.wins ?? 0,
+                losses: status.losses ?? 0,
+                score: getScore(status) ?? 0
+            };
+            data.participants.push(playerData);
+        } catch (err) {
+            console.log("some error occurred");
+            console.log(err);
+        }
+    }, Promise.resolve());
+
+    data.participants.sort((playerA, playerB) => {
+        return playerB.score - playerA.score;
+    });
+
     cache.lastData = data;
 
     return data;

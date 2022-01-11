@@ -6,44 +6,33 @@ async function update () {
     const data = await request("GET", "/blob");
     console.log(data);
 
-    const map = {
-        "userName": "name",
-        "league": "league",
-        "points": "points"
-    };
+    const container = document.querySelector("#app");
+    container.innerHTML = "";
 
-    const users = {
-        "1": "left",
-        "2": "right"
-    };
+    data.participants.forEach((player) => {
+        const node = document.createElement("div");
+        node.classList.add("box");
 
-    // set data
-    Object.keys(users).forEach((identifier) => {
-        const containerId = users[identifier];
-        const container = document.querySelector(`#${containerId}`);
-        const userData = data[`summoner${identifier}`];
+        const userName = document.createElement("h1");
+        userName.innerText = `${player.name}`;
+        node.appendChild(userName);
 
-        Object.keys(map).forEach(key => {
-            const value = map[key];
-            const elem = document.querySelector(`#${key}${identifier}`);
-            if (!elem) {
-                return;
-            }
-            elem.innerText = userData[value];
-        });
+        const league = document.createElement("h2");
+        league.innerText = `${player.league} ${player.points}`;
+        node.appendChild(league);
 
-        if (userData.lead) {
-            container.classList.add("lead");
-        } else {
-            container.classList.remove("lead");
-        }
-
-        const info = document.querySelector(`#info${identifier}`);
         let ratio = 0;
-        if (userData.losses + userData.wins > 0) {
-            ratio = userData.wins / (userData.losses + userData.wins) * 100;
+        if (player.losses + player.wins > 0) {
+            ratio = player.wins / (player.losses + player.wins) * 100;
         }
-        info.innerText = `${userData.wins}W/${userData.losses}L (${ratio > 0 ? ratio.toFixed(1) : ratio.toFixed(0)}%)`;
+        const stats = document.createElement("p");
+        const games = `${player.wins + player.losses}<small>Games</small>`;
+        const winRate = `${ratio > 0 ? ratio.toFixed(1) : ratio.toFixed(0)}<small>%</small>`;
+        const winLoose = `<span class="green">${player.wins}<small>W</small></span> <span class="red">${player.losses}<small>L</small></span>`;
+        stats.innerHTML = `${games} ${winRate} ${winLoose}`;
+        node.appendChild(stats);
+
+        container.appendChild(node);
     });
 
     const msRemaining = data.endDate - Date.now();
