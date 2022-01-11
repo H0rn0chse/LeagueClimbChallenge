@@ -35,10 +35,13 @@
 
 h1 .rank {
     font-weight: normal;
-    font-size: small;
+    font-size: smaller;
 }
 
 @media only screen and (max-width: 600px) {
+    h1 .rank {
+        font-size: small;
+    }
     #app {
         padding-top: 0.5em;
     }
