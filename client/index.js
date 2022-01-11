@@ -9,12 +9,12 @@ async function update () {
     const container = document.querySelector("#app");
     container.innerHTML = "";
 
-    data.participants.forEach((player) => {
+    data.participants.forEach((player, index) => {
         const node = document.createElement("div");
         node.classList.add("box");
 
         const userName = document.createElement("h1");
-        userName.innerText = `${player.name}`;
+        userName.innerHTML = `<span class="rank">${index + 1}. </span>${player.name}`;
         node.appendChild(userName);
 
         const league = document.createElement("h2");
