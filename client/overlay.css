@@ -37,7 +37,8 @@
 
 @media only screen and (max-width: 600px) {
     #overlayContainer {
-        align-items: flex-start;
+        align-items: center;
+        /*align-items: flex-start;*/
         justify-content: flex-end;
         left: 0;
     }
