@@ -1,3 +1,4 @@
+import { init } from "./Countdown.js";
 import { request } from "./socket-server/handler.js";
 
 const { alertify } = globalThis;
@@ -35,9 +36,7 @@ async function update () {
         container.appendChild(node);
     });
 
-    const msRemaining = data.endDate - Date.now();
-    const daysRemaining = Math.floor((((msRemaining / 1000) / 60) / 60) / 24);
-    document.querySelector("#daysRemaining").innerText = daysRemaining;
+    init(data.endDate);
 }
 
 update()

@@ -5,11 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeagueClimbChallenge</title>
+
+    <!-- dev files
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic@6/picnic.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1/build/css/alertify.css">
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1/build/alertify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@h0rn0chse/night-sky@1/dist/bundle.js"></script>
+    -->
+
+    <!-- prod files -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic@6/picnic.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/alertifyjs@1/build/css/alertify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1/build/css/alertify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1/build/alertify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@h0rn0chse/night-sky@1/dist/bundle.min.js"></script>
+
     <link rel="stylesheet" href="./main.css">
-    <script src="https://unpkg.com/alertifyjs@1/build/alertify.js"></script>
-    <script src="https://unpkg.com/@h0rn0chse/night-sky@1/dist/bundle.min.js"></script>
     <script type="module" src="./index.js"></script>
 </head>
 <body>
@@ -53,7 +63,7 @@
     <div id="overlayContainer">
         <div id="overlay">
             <button id="btnUpdate">Update</button>
-            <div>Noch <b id="daysRemaining">6</b> Tage</div>
+            <span id="countdown">24<small>T</small> 12<small>h</small> 29<small>min</small></span>
         </div>
     </div>
     <div id="busyContainer" style="display: none;">

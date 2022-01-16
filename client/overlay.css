@@ -26,8 +26,13 @@
     margin: 1em;
 }
 
-#overlay div, #overlay b {
-    color: #0074d9;
+#overlay span {
+    color: #0057A3;
+    font-weight: bold;
+}
+
+#overlay span small{
+    color: #0A8DFF;
 }
 
 @media only screen and (max-width: 600px) {

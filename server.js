@@ -11,7 +11,7 @@ registerXhrHandler("get", "/blob", async (req, res) => {
     console.log("handling /blob request");
 
     const data = await getData();
-    data.endDate = parseInt(config.endDateEpoch, "10") * 1000;
+    data.endDate = new Date(config.endDate).getTime();
 
     res.json(data);
     res.end();
