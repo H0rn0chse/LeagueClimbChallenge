@@ -18,8 +18,9 @@ async function update () {
         userName.innerHTML = `<span class="rank">${index + 1}. </span>${player.name}`;
         node.appendChild(userName);
 
+        const globalRank = player.rank > 0 ? `${player.rank}. ` : "";
         const league = document.createElement("h2");
-        league.innerText = `${player.league} ${player.points}`;
+        league.innerHTML = `<small>${globalRank}</small>${player.league} ${player.points}`;
         node.appendChild(league);
 
         let ratio = 0;

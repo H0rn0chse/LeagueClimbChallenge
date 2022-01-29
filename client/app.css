@@ -42,6 +42,10 @@ h1 .rank {
     font-size: smaller;
 }
 
+h2 small {
+    font-weight: normal;
+}
+
 @media only screen and (max-width: 600px) {
     h1 .rank {
         font-size: small;
