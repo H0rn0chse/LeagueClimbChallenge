@@ -2,25 +2,22 @@
     "participants": [
         {
             "name": "Noway",
-            "summonerName": "Don Noway",
-            "region": "EUW1"
+            "summonerName": "Don Noway"
         }, {
             "name": "Drututt",
-            "summonerName": "Drututt",
-            "region": "EUW1"
+            "summonerName": "Drututt"
         }, {
             "name": "Nisqy",
-            "summonerName": "Νisqy",
-            "region": "EUW1"
+            "summonerName": "Νisqy"
         }, {
             "name": "Baus",
-            "summonerName": "TheBausffs",
-            "region": "EUW1"
+            "summonerName": "TheBausffs"
         }, {
             "name": "Agurin",
-            "summonerName": "Agurin",
-            "region": "EUW1"
+            "summonerName": "Agurin"
         }
     ],
+    "region": "EUW1",
+    "queueType": "RANKED_SOLO_5x5",
     "endDate": "2022-02-13T00:00:00+01:00"
 }

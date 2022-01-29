@@ -88,36 +88,83 @@ const divisionMap = {
     },
 };
 
-function getSummoner (summonerName, region) {
-    let summonerPromise = cache.summoner?.[region]?.[summonerName];
+const REGION = config.region;
+const QUEUE_TYPE = config.queueType;
+
+/**
+ * Fetches the summoner id by name
+ * @param {string} summonerName
+ * @returns {Promise{object}} Resolves object containing the id
+ */
+function getSummoner (summonerName) {
+    let summonerPromise = cache.summoner?.[summonerName];
     if (summonerPromise) {
         return summonerPromise;
     }
 
-    const host = `${region.toLowerCase()}.api.riotgames.com`;
+    const host = `${REGION.toLowerCase()}.api.riotgames.com`;
     const endpoint = `/lol/summoner/v4/summoners/by-name/${summonerName}`;
     summonerPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken });
 
-    if (!cache.summoner[region]) {
-        cache.summoner[region] = {};
+    if (!cache.summoner[summonerName]) {
+        cache.summoner[summonerName] = summonerPromise;
     }
-    if (!cache.summoner[region][summonerName]) {
-        cache.summoner[region][summonerName] = summonerPromise;
-    }
-
     return summonerPromise;
 }
 
-async function getStatus (summonerName, region) {
+let ladderCachePromise;
+/**
+ * Fetches and chaches the ladder rank and
+ * @param {string} summonerId
+ */
+async function getLadderRank (summonerId) {
+    if (ladderCachePromise) {
+        const ladder = await ladderCachePromise;
+        return ladder[summonerId] || -1;
+    }
 
-    const info = await getSummoner(summonerName, region);
+    const host = `${REGION.toLowerCase()}.api.riotgames.com`;
+    const endpoint = `/lol/league/v4/challengerleagues/by-queue/${QUEUE_TYPE}`;
+    ladderCachePromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
+        .then((data) => {
+            const dict = {};
+            data.entries
+                .sort((playerA, playerB) => {
+                    return playerB.leaguePoints - playerA.leaguePoints;
+                })
+                .forEach((entry, index) => {
+                    dict[entry.summonerId] = index + 1;
+                });
 
-    const host = `${region.toLowerCase()}.api.riotgames.com`;
+            return dict;
+        });
+
+    return getLadderRank(summonerId);
+}
+
+/**
+ * clears the ladder cache
+ */
+function clearLadderCache () {
+    ladderCachePromise = null;
+}
+
+/**
+ * Fetches informations about the current rank
+ * @param {string} summonerName
+ * @returns {Promise{object}} Resolves information object
+ */
+async function getStatus (summonerName) {
+
+    const info = await getSummoner(summonerName);
+    const ladderRank = await getLadderRank(info.id);
+
+    const host = `${REGION.toLowerCase()}.api.riotgames.com`;
     const endpoint = `/lol/league/v4/entries/by-summoner/${info.id}`;
     const statusPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
         .then((entries = []) => {
             const rankedEntry = entries.filter(entries => {
-                return entries.queueType === "RANKED_SOLO_5x5";
+                return entries.queueType === QUEUE_TYPE;
             })[0];
             if (!rankedEntry) {
                 return {
@@ -126,6 +173,7 @@ async function getStatus (summonerName, region) {
                     leaguePoints: 0
                 };
             }
+            rankedEntry.ladderRank = ladderRank;
             return rankedEntry;
         });
 
@@ -162,10 +210,12 @@ export async function getData () {
         participants: []
     };
 
+    clearLadderCache();
+
     await config.participants.reduce(async (promise, player) => {
         await promise;
         try {
-            const status = await getStatus(player.summonerName, player.region);
+            const status = await getStatus(player.summonerName);
 
             const playerData = {
                 name: player.name,
@@ -173,7 +223,8 @@ export async function getData () {
                 points: (status.leaguePoints ?? 0) + " LP",
                 wins: status.wins ?? 0,
                 losses: status.losses ?? 0,
-                score: getScore(status) ?? 0
+                score: getScore(status) ?? 0,
+                rank: status.ladderRank
             };
             data.participants.push(playerData);
         } catch (err) {
