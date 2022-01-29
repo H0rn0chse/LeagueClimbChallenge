@@ -22,8 +22,12 @@ export function getRequest (host, endpoint, headers = {}, queryParams = {}) {
         console.log(`sending request: ${endpoint}`);
         const req = request(options, res => {
 
-            res.on("data", d => {
-                const buffer = Buffer.from(d);
+            const body = [];
+            res.on("data", (chunk) => {
+                body.push(chunk);
+            });
+            res.on("end", () => {
+                const buffer = Buffer.concat(body);
                 const json = buffer.toString();
                 let data;
                 try {
