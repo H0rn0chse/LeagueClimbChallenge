@@ -6,10 +6,44 @@ const { alertify } = globalThis;
 const LOCAL_STORAGE_KEY = "LeagueClimbChallengeData";
 
 async function fetchData () {
+    const oldData = fetchFromLocalStorage();
     const data = await request("GET", "/blob");
     console.log(data);
     saveToLocalStorage(data);
+    calculateDiff(data.participants, oldData.participants);
     return data;
+}
+
+function calculateDiff (newList, oldList) {
+    try {
+        const playerMap = {};
+        newList.forEach((player, index) => {
+            playerMap[player.name] = {
+                listRank: index + 1,
+                rank: player.rank,
+                points: parseInt(player.points.substring(0, player.points.length - 3), 10),
+                wins: player.wins,
+                losses: player.losses,
+            };
+        });
+
+        oldList.forEach((player, index) => {
+            const newData = playerMap[player.name];
+            playerMap[player.name] = {
+                listRank: newData.listRank - (index + 1),
+                rank: newData.rank - player.rank,
+                points: newData.points - parseInt(player.points.substring(0, player.points.length - 3), 10),
+                wins: newData.wins - player.wins,
+                losses: newData.losses - player.losses,
+            };
+        });
+
+        newList.forEach((player) => {
+            player.diff = playerMap[player.name];
+        });
+    } catch (err) {
+        console.error("Failed to calculate the diff", err);
+    }
 }
 
 function saveToLocalStorage (data) {
@@ -18,7 +52,7 @@ function saveToLocalStorage (data) {
         json = JSON.stringify(data);
         localStorage.setItem(LOCAL_STORAGE_KEY, json);
     } catch (err) {
-        console.error("Could not save to localStorage", err);
+        console.error("Failed to save to localStorage", err);
     }
 }
 
@@ -64,6 +98,26 @@ function updateDOM (data) {
         const winLoose = `<span class="green">${player.wins}<small>W</small></span> <span class="red">${player.losses}<small>L</small></span>`;
         stats.innerHTML = `${games} ${winRate} ${winLoose}`;
         node.appendChild(stats);
+
+        let pointsDiff = player?.diff?.points;
+        if (pointsDiff) {
+            const diff = document.createElement("div");
+            diff.classList.add("diff");
+            if (pointsDiff > 0) {
+                diff.classList.add("diff", "positive");
+                pointsDiff = `+${pointsDiff}`;
+            } else {
+                diff.classList.add("diff", "negative");
+            }
+            diff.innerHTML = `<h2>${pointsDiff}</h2>`;
+            node.appendChild(diff);
+            setTimeout(() => {
+                diff.classList.add("disappear");
+                setTimeout(() => {
+                    diff.remove();
+                }, 3000);
+            }, 2000);
+        }
 
         container.appendChild(node);
     });

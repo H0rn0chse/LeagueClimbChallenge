@@ -18,6 +18,7 @@
 }
 
 .box {
+    position: relative;
     margin: 0.25em;
     padding: 0.5em;
     background-color: rgb(211, 211, 211, 0.18);
@@ -46,6 +47,51 @@ h2 small {
     font-weight: normal;
 }
 
+.diff {
+    position: absolute;
+    top: 2.5em;
+    left: 21em;
+
+    opacity: 1;
+    animation: transitionIn 0.8s ease-in;
+}
+
+@keyframes transitionIn {
+    0% {
+        transform: translateX(-2em);
+        opacity: 0;
+    }
+    35% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.diff.negative * {
+    color: red;
+}
+
+.diff.positive * {
+    color: greenyellow;
+}
+
+.diff.disappear {
+    opacity: 0;
+    animation: transitionOut 1s ease-out;
+}
+
+@keyframes transitionOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     h1 .rank {
         font-size: small;
@@ -59,5 +105,8 @@ h2 small {
         width: 15em;
         line-height: 1.25;
         border-radius: 20px;
+    }
+    .diff {
+        left: 15.5em;
     }
 }
