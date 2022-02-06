@@ -9,15 +9,17 @@
     <!-- dev files
     <link rel="stylesheet" href="./picnic/picnic.css">
     <link rel="stylesheet" href="./alertifyjs/css/alertify.css">
-    <script src="./alertifyjs/alertify.js"></script>
-    <script src="./night-sky/bundle.js"></script>
+    <script src="./alertifyjs/alertify.js" defer></script>
+    <script src="./night-sky/bundle.js" defer></script>
+    <script type="module" src="./wc-github-corners/index.es.js"></script>
     -->
 
     <!-- prod files -->
     <link rel="stylesheet" href="./picnic/picnic.min.css">
     <link rel="stylesheet" href="./alertifyjs/css/alertify.min.css">
-    <script src="./alertifyjs/alertify.min.js"></script>
-    <script src="./night-sky/bundle.min.js"></script>
+    <script src="./alertifyjs/alertify.min.js" defer></script>
+    <script src="./night-sky/bundle.min.js" defer></script>
+    <script type="module" src="./wc-github-corners/index.es.js"></script>
 
     <link rel="stylesheet" href="./main.css">
     <script type="module" src="./index.js"></script>
@@ -74,12 +76,11 @@
             Loading...
         </div>
     </div>
-
 </body>
-<script
-		data-label="Check out the GitHub repository!"
-		data-href="https://github.com/H0rn0chse/LeagueClimbChallenge"
-		data-target="_blank"
-		src="https://unpkg.com/github-corners@latest/dist/embed.min.js">
-	</script>
+<github-corners
+    label="Check out the GitHub repository!"
+    repo="H0rn0chse/LeagueClimbChallenge"
+    blank="true"
+>
+</github-corners>
 </html>

@@ -13,6 +13,8 @@ startServer({
         "/node_modules/alertifyjs/build", "/alertifyjs"
     ], [
         "/node_modules/@h0rn0chse/night-sky/dist", "/night-sky"
+    ], [
+        "/node_modules/wc-github-corners/dist", "/wc-github-corners"
     ]]
 });
 
