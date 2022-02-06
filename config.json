@@ -2,19 +2,38 @@
     "participants": [
         {
             "name": "Noway",
-            "summonerName": "Don Noway"
-        }, {
+            "summonerName": "Don Noway",
+            "summonerId": "dyLJmzvLTZfKpZqFVh0P57ltGlTjgCg5RjATDiCYDxxGp_8",
+            "accountId": "ElnE1LybchVVmuLurR4l81t4gGW4rBQEtfiTZprnUufxNg",
+            "puuid": "EuiVTF4FmwuVbQIl-pIzrhd2hvLCmiUy7n1anjjhsoJdz7xCuPNyhulzY7-mOD0IOqe9B5adUkUxSw"
+        },
+        {
             "name": "Drututt",
-            "summonerName": "Drututt"
-        }, {
+            "summonerName": "Drututt",
+            "summonerId": "dlvDqzN1ErV2wCYVUPMe8RgKFz9hhk7tcFAwsk3vknHgg0XA",
+            "accountId": "rmv1JmI2Qv-T_6H2AcZnegdJ2hxEuvzGJ0KDzNRmiTtuym0-Vy4HxsEB",
+            "puuid": "4wExJL-ZUhE_EmbBYBsOtGR-gz3Teqeopy6OYmvNk9NlQLlsbYAAY5a71ZZ2mS2RPcsklx1hkkqwmA"
+        },
+        {
             "name": "Nisqy",
-            "summonerName": "Νisqy"
-        }, {
+            "summonerName": "NISQY LFT",
+            "summonerId": "uDgGUYADpzanFjAKs9O0cJWvJwVwhBb20zUfSCFkw-_Y91M",
+            "accountId": "8sHvQj_z13V5yiwY6JUeebgxOuQjwqNrK0SfmEl9ljQt8w",
+            "puuid": "Izpi_7hmU86Q3_t1vShcAoyISI6HPZCvMFy2qPOLZd-YPRqeBr000dx7bYUfUY0cU5tty5EDKLYQiw"
+        },
+        {
             "name": "Baus",
-            "summonerName": "TheBausffs"
-        }, {
+            "summonerName": "TheBausffs",
+            "summonerId": "ikmygmYGVbuhb5PlvuhDJ1Sn2maGyEVoEvxuLxJV1HDnSLkN",
+            "accountId": "Ovn74v0_LPiwlgCAHu_Wl0C7m_QZuTMC8b4BW6o_O9SznBg",
+            "puuid": "DQ9QlR0DX2o3H-lynOzWZRYUzmPq87Os1tl3pK7gAlOXCe2tYg-E56H5HooRRqe3HLfSPMr8n_lsPg"
+        },
+        {
             "name": "Agurin",
-            "summonerName": "Agurin"
+            "summonerName": "Agurin",
+            "summonerId": "4zt8V-_5sJp7sT079ZpwBpDfGFR38YcZynywl61-f1RVKzw",
+            "accountId": "XsrK3FMqlmvol58CDs26JtEd9MTK4tsbR4OEwbN1i_BOmw",
+            "puuid": "ifZagp3-rjhTuKLTFSrd_9eLifusbIR76K8jmjsApK4t3Gv28TgCMhddWUmu5Vt_UCizezGvnrVgxA"
         }
     ],
     "region": "EUW1",

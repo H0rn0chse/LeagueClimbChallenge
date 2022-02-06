@@ -9,8 +9,8 @@ if (process.env.RIOT_APP_TOKEN === undefined) {
 }
 
 const cache = {
-    summoner: {},
-    lastData: {}
+    lastData: {},
+    ladder: null
 };
 
 const riotToken = process.env.RIOT_APP_TOKEN;
@@ -94,38 +94,27 @@ const QUEUE_TYPE = config.queueType;
 /**
  * Fetches the summoner id by name
  * @param {string} summonerName
- * @returns {Promise{object}} Resolves object containing the id
+ * @returns {Promise{object}} Resolves an object containg the ids
  */
-function getSummoner (summonerName) {
-    let summonerPromise = cache.summoner?.[summonerName];
-    if (summonerPromise) {
-        return summonerPromise;
-    }
-
+export async function getSummonerIds (summonerName) {
     const host = `${REGION.toLowerCase()}.api.riotgames.com`;
     const endpoint = `/lol/summoner/v4/summoners/by-name/${summonerName}`;
-    summonerPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken });
-
-    if (!cache.summoner[summonerName]) {
-        cache.summoner[summonerName] = summonerPromise;
-    }
-    return summonerPromise;
+    return getRequest(host, endpoint, { "X-Riot-Token": riotToken });
 }
 
-let ladderCachePromise;
 /**
  * Fetches and chaches the ladder rank and
  * @param {string} summonerId
  */
 async function getLadderRank (summonerId) {
-    if (ladderCachePromise) {
-        const ladder = await ladderCachePromise;
+    if (cache.ladder) {
+        const ladder = await cache.ladder;
         return ladder[summonerId] || -1;
     }
 
     const host = `${REGION.toLowerCase()}.api.riotgames.com`;
     const endpoint = `/lol/league/v4/challengerleagues/by-queue/${QUEUE_TYPE}`;
-    ladderCachePromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
+    cache.ladder = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
         .then((data) => {
             const dict = {};
             data.entries
@@ -146,21 +135,20 @@ async function getLadderRank (summonerId) {
  * clears the ladder cache
  */
 function clearLadderCache () {
-    ladderCachePromise = null;
+    cache.ladder = null;
 }
 
 /**
  * Fetches informations about the current rank
- * @param {string} summonerName
+ * @param {string} summonerId
  * @returns {Promise{object}} Resolves information object
  */
-async function getStatus (summonerName) {
+async function getStatus (summonerId) {
 
-    const info = await getSummoner(summonerName);
-    const ladderRank = await getLadderRank(info.id);
+    const ladderRank = await getLadderRank(summonerId);
 
     const host = `${REGION.toLowerCase()}.api.riotgames.com`;
-    const endpoint = `/lol/league/v4/entries/by-summoner/${info.id}`;
+    const endpoint = `/lol/league/v4/entries/by-summoner/${summonerId}`;
     const statusPromise = getRequest(host, endpoint, { "X-Riot-Token": riotToken })
         .then((entries = []) => {
             const rankedEntry = entries.filter(entries => {
@@ -215,7 +203,7 @@ export async function getData () {
     await config.participants.reduce(async (promise, player) => {
         await promise;
         try {
-            const status = await getStatus(player.summonerName);
+            const status = await getStatus(player.summonerId);
 
             const playerData = {
                 name: player.name,

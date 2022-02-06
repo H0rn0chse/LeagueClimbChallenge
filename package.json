@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "startLocal": "npm run start --debug"
+    "startLocal": "npm run start --debug",
+    "updateConfig": "node ./scripts/updateConfig.js"
   },
   "repository": {
     "type": "git",
