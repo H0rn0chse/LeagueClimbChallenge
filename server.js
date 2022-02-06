@@ -4,7 +4,16 @@ import { config } from "./server/config.js";
 import { getData } from "./server/leagueHandler.js";
 
 startServer({
-    useClientHandler: true
+    useClientHandler: true,
+    publicPaths: [[
+        "/client", "/"
+    ], [
+        "/node_modules/picnic", "/picnic"
+    ], [
+        "/node_modules/alertifyjs/build", "/alertifyjs"
+    ], [
+        "/node_modules/@h0rn0chse/night-sky/dist", "/night-sky"
+    ]]
 });
 
 registerXhrHandler("get", "/blob", async (req, res) => {

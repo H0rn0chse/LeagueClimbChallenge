@@ -20,8 +20,11 @@
   },
   "homepage": "https://github.com/H0rn0chse/LeagueClimbChallenge#readme",
   "dependencies": {
+    "@h0rn0chse/night-sky": "^1.0.2",
     "@h0rn0chse/socket-server": "^1.1.2",
-    "dotenv": "^10.0.0"
+    "alertifyjs": "^1.13.1",
+    "dotenv": "^10.0.0",
+    "picnic": "^6.5.5"
   },
   "devDependencies": {
     "eslint": "^8.6.0"
