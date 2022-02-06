@@ -1,11 +1,42 @@
-import { init } from "./Countdown.js";
+import { init as initCountdown } from "./Countdown.js";
 import { request } from "./socket-server/handler.js";
 
 const { alertify } = globalThis;
 
-async function update () {
+const LOCAL_STORAGE_KEY = "LeagueClimbChallengeData";
+
+async function fetchData () {
     const data = await request("GET", "/blob");
     console.log(data);
+    saveToLocalStorage(data);
+    return data;
+}
+
+function saveToLocalStorage (data) {
+    let json;
+    try {
+        json = JSON.stringify(data);
+        localStorage.setItem(LOCAL_STORAGE_KEY, json);
+    } catch (err) {
+        console.error("Could not save to localStorage", err);
+    }
+}
+
+function fetchFromLocalStorage () {
+    let data;
+    const json = localStorage.getItem(LOCAL_STORAGE_KEY);
+    try {
+        data = JSON.parse(json);
+    } catch (err) {
+        data = null;
+    }
+    return data;
+}
+
+function updateDOM (data) {
+    if (!data) {
+        return;
+    }
 
     const container = document.querySelector("#app");
     container.innerHTML = "";
@@ -37,11 +68,13 @@ async function update () {
         container.appendChild(node);
     });
 
-    init(data.endDate);
+    initCountdown(data.endDate);
 }
 
-update()
-    .catch(console.error);
+function fetchAndUpdate () {
+    return fetchData()
+        .then(updateDOM);
+}
 
 const updateButton = document.querySelector("#btnUpdate");
 updateButton.addEventListener("click", async (evt) => {
@@ -53,7 +86,7 @@ updateButton.addEventListener("click", async (evt) => {
             // SetBusy
             busyContainer.style.display = "";
         }, 800);
-        await update();
+        await fetchAndUpdate();
         alertify.success("Updated");
     } catch (err) {
         console.error(err);
@@ -64,3 +97,13 @@ updateButton.addEventListener("click", async (evt) => {
         busyContainer.style.display = "none";
     }
 });
+
+// First try to update from localStorage
+updateButton.setAttribute("disabled", "");
+updateDOM(fetchFromLocalStorage());
+// Second fetch new data from server
+fetchAndUpdate()
+    .catch(console.error)
+    .finally(() => {
+        updateButton.removeAttribute("disabled");
+    });

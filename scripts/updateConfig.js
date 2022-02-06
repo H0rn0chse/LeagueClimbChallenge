@@ -15,8 +15,8 @@ const promises = config.participants.map(async (data) => {
 
     const result = await getSummonerIds(data.summonerName);
     data.summonerId = result.id;
-    data.accountId = result.accountId;
-    data.puuid = result.puuid;
+    data.accountId = result.accountId; // regional stable
+    data.puuid = result.puuid; // global stable
 });
 
 Promise.all(promises)
