@@ -6,15 +6,15 @@ const { alertify } = globalThis;
 const LOCAL_STORAGE_KEY = "LeagueClimbChallengeData";
 
 async function fetchData () {
-    const oldData = fetchFromLocalStorage();
-    const data = await request("GET", "/blob");
+    const oldData = fetchFromLocalStorage() || {};
+    const data = await request("GET", "/blob") || {};
     console.log(data);
     saveToLocalStorage(data);
     calculateDiff(data.participants, oldData.participants);
     return data;
 }
 
-function calculateDiff (newList, oldList) {
+function calculateDiff (newList = [], oldList = []) {
     try {
         const playerMap = {};
         newList.forEach((player, index) => {
